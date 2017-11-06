@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"bytes"
 	"time"
+	"errors"
 )
 
 type hTTPResponse struct {
@@ -67,7 +68,7 @@ var Config []Configuration
 /*
 	Generic HTTP caller
  */
-func HTTPRequest(project string, urlPath string, jsonBody string) hTTPResponse {
+func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse, error) {
 	var hTTPResp hTTPResponse
 	var user string
 	var pass string
@@ -85,12 +86,13 @@ func HTTPRequest(project string, urlPath string, jsonBody string) hTTPResponse {
 	}
 
 	if(len(url) == 0) {
-		log.Printf(" ---------- Nexus configuration is missing  ---------- ")
-		log.Printf("\t For project " + project)
-		return hTTPResp
+		err := errors.New("Nexus configuration is missing, for project " + project)
+		return hTTPResp, err
 	}
 
 	url = fmt.Sprintf("%s%s", url, urlPath)
+
+	fmt.Println(url)
 
 	if(len(jsonBody) > 0) {
 		httpMethod = "POST"
@@ -100,44 +102,51 @@ func HTTPRequest(project string, urlPath string, jsonBody string) hTTPResponse {
 	client := &http.Client{
 		Timeout: timeoutVal,
 	}
-	r, _ := http.NewRequest(httpMethod, url, bytes.NewBufferString(jsonBody))
+	r, erroHTTP := http.NewRequest(httpMethod, url, bytes.NewBufferString(jsonBody))
+	if erroHTTP != nil {
+		return hTTPResp, erroHTTP
+	}
 
 	r.SetBasicAuth(user, pass)
 	r.Header.Add("Accept", "application/json")
 
 	resp, errDo := client.Do(r)
 	if errDo != nil {
-		log.Println("Error connecting to Nexus server (" + project + ").")
-		return hTTPResp
+		err := errors.New("Error connecting to Nexus server (" + project + ")." + errDo.Error())
+		return hTTPResp, err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Printf("ioutil.ReadAll err   #%v ", err)
+		err := errors.New("Error reading Body: " + err.Error())
+		return hTTPResp, err
 	}
 
 	hTTPResp.Header = resp.Header
 	hTTPResp.Body = body
 
-	return hTTPResp
+	return hTTPResp, nil
 }
 
 /*
 	Search in Jira, we should specify the project from that item
  */
-func RequestSearch(project string, query string) SearchResponse {
+func RequestSearch(project string, query string) (SearchResponse, error) {
 	var urlSearchPath string
 	var data SearchResponse
 
 	urlSearchPath = fmt.Sprintf("nexus/service/local/lucene/search?q=%s", query)
 
-	response := HTTPRequest(project, urlSearchPath, "")
+	response, error := HTTPRequest(project, urlSearchPath, "")
+	if error != nil {
+		return data, error
+	}
 
 	err := json.Unmarshal(response.Body, &data)
 	if err != nil {
-		log.Printf("json.Unmarshal err   #%v ", err)
+		log.Printf("gonexus.RequestSearch - json.Unmarshal err   #%v ", err)
 	}
 
-	return data
+	return data, nil
 }
