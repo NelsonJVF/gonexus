@@ -92,8 +92,6 @@ func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse,
 
 	url = fmt.Sprintf("%s%s", url, urlPath)
 
-	fmt.Println(url)
-
 	if(len(jsonBody) > 0) {
 		httpMethod = "POST"
 	}
