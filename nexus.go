@@ -1,4 +1,3 @@
-// Copyright 2017 NelsonJVF. All rights reserved.
 package gonexus
 
 import (
@@ -12,12 +11,13 @@ import (
 	"errors"
 )
 
+// Struct for HTTP Response from Nexus
 type hTTPResponse struct {
 	Header 	http.Header
 	Body 		[]byte
 }
 
-//Struct for Nexus access information
+// Struct for Nexus access information
 type Configuration struct {
 	Lable string `yaml:"lable"` // Some projects have more than one Jira, so just lable as you wish
 	User string  `yaml:"user"` // Username for Jira
@@ -26,7 +26,7 @@ type Configuration struct {
 	Timeout int  `yaml:"timeout"` // URL to Jira hostname + port
 }
 
-// Nexus Search Response Struct
+// Struct of the Nexus Search Response
 type SearchResponse struct {
 	TotalCount     int  `json:"totalCount"`
 	From           int  `json:"from"`
@@ -61,7 +61,7 @@ type SearchResponse struct {
 
 var Config []Configuration
 
-// Generic HTTP caller
+// HTTPRequest represents a a HTTP request for Nexus REST API
 func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse, error) {
 	var hTTPResp hTTPResponse
 	var user string
@@ -121,7 +121,7 @@ func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse,
 	return hTTPResp, nil
 }
 
-// Search in Nexus, we should specify the project from that item
+// RequestSearch represents a search feature in Nexus rest api, we should specify the project from that item
 func RequestSearch(project string, query string) (SearchResponse, error) {
 	var urlSearchPath string
 	var data SearchResponse
