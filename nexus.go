@@ -62,7 +62,7 @@ type SearchResponse struct {
 var Config []Configuration
 
 // HTTPRequest represents a a HTTP request for Nexus REST API
-func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse, error) {
+func hTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse, error) {
 	var hTTPResp hTTPResponse
 	var user string
 	var pass string
@@ -128,7 +128,7 @@ func RequestSearch(project string, query string) (SearchResponse, error) {
 
 	urlSearchPath = fmt.Sprintf("nexus/service/local/lucene/search?q=%s", query)
 
-	response, error := HTTPRequest(project, urlSearchPath, "")
+	response, error := hTTPRequest(project, urlSearchPath, "")
 	if error != nil {
 		return data, error
 	}
