@@ -11,13 +11,13 @@ import (
 	"errors"
 )
 
-// Struct for HTTP Response from Nexus
+// hTTPResponse is a strut for HTTP Response from Nexus
 type hTTPResponse struct {
 	Header 	http.Header
 	Body 		[]byte
 }
 
-// Struct for Nexus access information
+// Configuration is a struct for Nexus access information
 type Configuration struct {
 	Lable string `yaml:"lable"` // Some projects have more than one Nexus, so just lable as you wish
 	User string  `yaml:"user"` // Username for Nexus
@@ -26,7 +26,7 @@ type Configuration struct {
 	Timeout int  `yaml:"timeout"` // Timeout to call Nexus
 }
 
-// Struct of the Nexus Search Response
+// SearchResponse is a struct of the Nexus Search Response
 type SearchResponse struct {
 	TotalCount     int  `json:"totalCount"`
 	From           int  `json:"from"`
