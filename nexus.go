@@ -59,6 +59,7 @@ type SearchResponse struct {
 	} `json:"data"`
 }
 
+// Config variable of type Configuration stores the information of Nexus server(s)
 var Config []Configuration
 
 // HTTPRequest represents a a HTTP request for Nexus REST API
