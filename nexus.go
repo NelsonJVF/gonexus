@@ -22,7 +22,7 @@ type Configuration struct {
 	Lable string `yaml:"lable"` // Some projects have more than one Nexus, so just lable as you wish
 	User string  `yaml:"user"` // Username for Nexus
 	Pass string  `yaml:"pass"` // Password from Nexus Username
-	Url string   `yaml:"url"` // Url to Nexus hostname + port
+	URL string   `yaml:"url"` // Url to Nexus hostname + port
 	Timeout int  `yaml:"timeout"` // Timeout to call Nexus
 }
 
@@ -75,7 +75,7 @@ func hTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse,
 		if c.Lable == project {
 			user = c.User
 			pass = c.Pass
-			url = c.Url
+			url = c.URL
 			timeout = c.Timeout
 		}
 	}
