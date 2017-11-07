@@ -17,9 +17,7 @@ type hTTPResponse struct {
 	Body 		[]byte
 }
 
-/*
-	Struct for Nexus access information
- */
+//Struct for Nexus access information
 type Configuration struct {
 	Lable string `yaml:"lable"` // Some projects have more than one Jira, so just lable as you wish
 	User string  `yaml:"user"` // Username for Jira
@@ -28,9 +26,7 @@ type Configuration struct {
 	Timeout int  `yaml:"timeout"` // URL to Jira hostname + port
 }
 
-/*
-	Nexus Search Response Struct
- */
+// Nexus Search Response Struct
 type SearchResponse struct {
 	TotalCount     int  `json:"totalCount"`
 	From           int  `json:"from"`
@@ -65,9 +61,7 @@ type SearchResponse struct {
 
 var Config []Configuration
 
-/*
-	Generic HTTP caller
- */
+// Generic HTTP caller
 func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse, error) {
 	var hTTPResp hTTPResponse
 	var user string
@@ -127,9 +121,7 @@ func HTTPRequest(project string, urlPath string, jsonBody string) (hTTPResponse,
 	return hTTPResp, nil
 }
 
-/*
-	Search in Jira, we should specify the project from that item
- */
+// Search in Nexus, we should specify the project from that item
 func RequestSearch(project string, query string) (SearchResponse, error) {
 	var urlSearchPath string
 	var data SearchResponse
