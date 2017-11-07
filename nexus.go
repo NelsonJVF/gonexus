@@ -19,11 +19,11 @@ type hTTPResponse struct {
 
 // Struct for Nexus access information
 type Configuration struct {
-	Lable string `yaml:"lable"` // Some projects have more than one Jira, so just lable as you wish
-	User string  `yaml:"user"` // Username for Jira
-	Pass string  `yaml:"pass"` // Password from Jira Username
-	Url string   `yaml:"url"` // URL to Jira hostname + port
-	Timeout int  `yaml:"timeout"` // URL to Jira hostname + port
+	Lable string `yaml:"lable"` // Some projects have more than one Nexus, so just lable as you wish
+	User string  `yaml:"user"` // Username for Nexus
+	Pass string  `yaml:"pass"` // Password from Nexus Username
+	Url string   `yaml:"url"` // Url to Nexus hostname + port
+	Timeout int  `yaml:"timeout"` // Timeout to call Nexus
 }
 
 // Struct of the Nexus Search Response
